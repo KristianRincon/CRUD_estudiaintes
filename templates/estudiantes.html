@@ -1,0 +1,83 @@
+{% extends "plantilla.html" %}
+
+{% block titulo %}
+Gestión de Estudiantes
+{% endblock %}
+
+{% block contenido %}
+
+{% if modelo.exito %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ modelo.exito }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+
+<!-- para mostrar el error se realiza llamando modelo (que es la variable apra recibir los datos de app.py ) y la key del diccionario osea error -->
+{% if modelo.error %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ modelo.error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+
+<div class="row">
+    <div class="col">
+        <table class="table table-primary table-striped">
+            <thead>
+                <tr>
+                    <th colspan="4" style="text-align: center;">Listado de estudiantes Registrados</th>
+                </tr>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre completo</th>
+                    <th>Correo</th>
+                    <th>telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- este for me trae los datos de la app.py osea la lista de tuplas de los estuiantes (siendo modelo la variable y estudientes la key del diccionario creado) -->
+                {% for estudiante in modelo.estudiantes %}
+                <tr>
+                    <!-- como es una tupla se utilizan las posiciones donde vienen los datos en estudiante.0 viene el codigo-->
+                    <td><a href="/admin/estudiantes/editar/{{estudiante.0}}">{{ estudiante.0 }}</a></td>
+                    <td>{{ estudiante.1 }} {{ estudiante.2 }}</th>
+                    <td>{{ estudiante.3 }}</td>
+                    <td>{{ estudiante.4 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col bg-primary text-white" style="padding: 10px;">
+        <h3>Registro de estudiantes nuevos</h3>
+        <form action="/admin/estudiantes/nuevo" method="post">
+            <div class="mb-3">
+                <label for="exampleInputCodigo" class="form-label">Código</label>
+                <input type="text" class="form-control" id="exampleInputCodigo" name="codigo">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputNombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="exampleInputNombre" name="nombres">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputApellidos" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="exampleInputApellidos" name="apellidos">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputCorreo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="exampleInputCorreo" name="correo">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputTelefono" class="form-label">Telefono</label>
+                <input type="text" class="form-control" id="exampleInputTelefono" name="telefono">
+              </div>
+              <div style="text-align: end;"> 
+              <button type="submit" class="btn btn-success">Registrar estudiante</button>
+              </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
